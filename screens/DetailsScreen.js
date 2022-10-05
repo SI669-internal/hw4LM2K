@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Input, Button } from '@rneui/themed';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { ADD_ITEM, UPDATE_ITEM } from '../Reducer';
+import { ADD_ITEM, UPDATE_ITEM, asyncDispatch } from '../Reducer';
 
 function DetailsScreen(props) {
 
@@ -19,22 +19,24 @@ function DetailsScreen(props) {
   const [inputText, setInputText] = useState(item.text);
 
   const addItem = (newText) => {
-    dispatch({
+    const action = {
       type: ADD_ITEM,
       payload: {
         text: newText
       }
-    });
+    };
+    dispatch(asyncDispatch(action));
   }
 
   const updateItem = (item, newText) => {
-    dispatch({
+    const action = {
       type: UPDATE_ITEM,
       payload: {
         key: item.key,
         text: newText
       }
-    });
+    };
+    dispatch(asyncDispatch(action));
   }
 
   return (

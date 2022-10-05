@@ -13,7 +13,15 @@ const initialState = {
   listItems: initListItems
 }
 
+function asyncDispatch(action) {
+  return async function asyncDispatchThunk(dispatch, getState) {
+    console.log('in async dispatch, ', action);
+    setTimeout(()=>dispatch(action), 1000);
+  }
+}
+
 const addItem = (state, newText) => {
+  console.log('now adding', newText);
   let { listItems } = state;
   let newListItems = listItems.concat({
     text: newText,
@@ -26,6 +34,7 @@ const addItem = (state, newText) => {
 }
 
 const updateItem = (state, itemId, newText) => {
+  console.log('now updating', itemId);
   let { listItems } = state;
   let newItem = {
     text: newText,
@@ -39,6 +48,7 @@ const updateItem = (state, itemId, newText) => {
 }
 
 const deleteItem = (state, itemId) => {
+  console.log('now deleting', itemId);
   let { listItems } = state;
   let newListItems = listItems.filter(elem=>elem.key !== itemId);
   return {
@@ -60,8 +70,6 @@ function rootReducer(state=initialState, action) {
   }
 }
 
-const myMiddleware = (action) => {
-  console.log('in middleware, action:', action);
-}
 
-export { rootReducer, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM };
+
+export { rootReducer, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, asyncDispatch };

@@ -1,24 +1,23 @@
 
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Button, Icon } from '@rneui/themed';
-import { DELETE_ITEM } from '../Reducer';
+import { Icon } from '@rneui/themed';
 import { useSelector, useDispatch } from 'react-redux';
+import { asyncDispatch, DELETE_ITEM } from '../Reducer';
 
 function ListItem(props) {
-
-  //const [listItems, setListItems] = useContext(ListContext);
 
   const listItems = useSelector((state) => state.listItems);
   const dispatch = useDispatch();
   const { item, navigation} = props;
 
   const deleteItem = (item) => {
-    dispatch({
+    const action = {
       type: DELETE_ITEM,
       payload: {
         key: item.key
       }
-    })
+    }; 
+    dispatch(asyncDispatch(action));
     // let newListItems = listItems.filter(elem=>elem.key !== item.key);
     // setListItems(newListItems);
   }
