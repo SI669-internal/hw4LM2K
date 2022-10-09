@@ -47,6 +47,61 @@ const deleteItem = (state, itemId) => {
   }
 }
 
+const addTag = (state, tagName) => {
+  let { tags } = state;
+  let newTags = tags.concat({key: Date.now(), tagName: tagName});
+  return {
+    ...state, 
+    tags: newTags
+  };
+}
+
+const updateTag = (state, key, tagName) => {
+  let { tags, listItems } = state;
+  let newTag = {
+    key: key,
+    tagName: tagName
+  };
+  let newTags = tags.map(elem=>elem.key===key?newTag:elem);
+  let newListItems = [];
+  for (let item of listItems) {
+    let newItem = { ...item, tags: [] };
+    let { itemTags } = newItem;
+    for ( let tag of itemTags ) {
+      if (tag in newTags) {
+        newItem.tags.push(tag);
+      }
+    }
+    newListItems.push(item);
+  }
+  return {
+    ...state,
+    listItems: newListItems,
+    tags: newTags
+  };
+}
+
+const deleteTag = (state, key) => {
+  let { tags, listItems } = state;
+  let newTags = tags.filter(elem=>elem.key!==key);
+  let newListItems = [];
+  for (let item of listItems) {
+    let newItem = { ...item, tags: [] };
+    let { itemTags } = newItem;
+    for ( let tag of itemTags ) {
+      if (tag in newTags) {
+        newItem.tags.push(tag);
+      }
+    }
+    newListItems.push(item);
+  }
+  return {
+    ...state,
+    listItems: newListItems,
+    tags: newTags
+  };
+}
+
 function rootReducer(state=initialState, action) {
   switch (action.type) {
     case ADD_ITEM:
@@ -55,6 +110,12 @@ function rootReducer(state=initialState, action) {
       return updateItem(state, action.payload.key, action.payload.text);
     case DELETE_ITEM:
       return deleteItem(state, action.payload.key);
+    case ADD_TAG:
+      return addTag(state, action.payload.tagName);
+    case UPDATE_TAG:
+      return updateTag(state, action.payload.key, action.payload.tagName);
+    case DELETE_TAG:
+      return deleteTag(state, action.payload.key);
     default:
       return state;
   }
