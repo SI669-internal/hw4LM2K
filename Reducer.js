@@ -4,20 +4,29 @@ const UPDATE_ITEM = 'UPDATE_ITEM';
 const DELETE_ITEM = 'DELETE_ITEM';
 
 
+const initTags = [
+  { tagName: 'Personal', key: Date.now() },
+  { tagName: 'School', key: Date.now() + 1},
+  { tagName: '669', key: Date.now() + 2},
+];
+
 const initListItems = [
-  { text: 'Get costume', key: Date.now() },
-  { text: 'Get candy', key: Date.now() + 1}
+  { text: 'Get costume', tags: [initTags[0].key], key: Date.now() },
+  { text: 'Get candy', tags: [initTags[0].key], key: Date.now() + 1},
+  { text: 'Finish HW4', tags: [initTags[1].key, initTags[2].key], key: Date.now() + 2},
 ];
 
 const initialState = {
+  tags: initTags,
   listItems: initListItems
 }
 
-const addItem = (state, newText) => {
+const addItem = (state, newText, tags) => {
   let { listItems } = state;
   let newListItems = listItems.concat({
     text: newText,
-    key: Date.now() + Math.random()
+    key: Date.now() + Math.random(),
+    tags: tags
   });
   return {
     ...state, 
@@ -25,11 +34,12 @@ const addItem = (state, newText) => {
   };
 }
 
-const updateItem = (state, itemId, newText) => {
+const updateItem = (state, itemId, newText, tags) => {
   let { listItems } = state;
   let newItem = {
     text: newText,
-    key: itemId
+    key: itemId, 
+    tags: tags
   };
   let newListItems = listItems.map(elem=>elem.key===itemId?newItem:elem);
   return {
@@ -47,75 +57,14 @@ const deleteItem = (state, itemId) => {
   }
 }
 
-const addTag = (state, tagName) => {
-  let { tags } = state;
-  let newTags = tags.concat({key: Date.now(), tagName: tagName});
-  return {
-    ...state, 
-    tags: newTags
-  };
-}
-
-const updateTag = (state, key, tagName) => {
-  let { tags, listItems } = state;
-  let newTag = {
-    key: key,
-    tagName: tagName
-  };
-  let newTags = tags.map(elem=>elem.key===key?newTag:elem);
-  let newListItems = [];
-  for (let item of listItems) {
-    let newItem = { ...item, tags: [] };
-    let { itemTags } = newItem;
-    for ( let tag of itemTags ) {
-      if (tag in newTags) {
-        newItem.tags.push(tag);
-      }
-    }
-    newListItems.push(item);
-  }
-  return {
-    ...state,
-    listItems: newListItems,
-    tags: newTags
-  };
-}
-
-const deleteTag = (state, key) => {
-  let { tags, listItems } = state;
-  let newTags = tags.filter(elem=>elem.key!==key);
-  let newListItems = [];
-  for (let item of listItems) {
-    let newItem = { ...item, tags: [] };
-    let { itemTags } = newItem;
-    for ( let tag of itemTags ) {
-      if (tag in newTags) {
-        newItem.tags.push(tag);
-      }
-    }
-    newListItems.push(item);
-  }
-  return {
-    ...state,
-    listItems: newListItems,
-    tags: newTags
-  };
-}
-
 function rootReducer(state=initialState, action) {
   switch (action.type) {
     case ADD_ITEM:
-      return addItem(state, action.payload.text);
+      return addItem(state, action.payload.text, action.payload.tags);
     case UPDATE_ITEM:
-      return updateItem(state, action.payload.key, action.payload.text);
+      return updateItem(state, action.payload.key, action.payload.text, action.payload.tags);
     case DELETE_ITEM:
       return deleteItem(state, action.payload.key);
-    case ADD_TAG:
-      return addTag(state, action.payload.tagName);
-    case UPDATE_TAG:
-      return updateTag(state, action.payload.key, action.payload.tagName);
-    case DELETE_TAG:
-      return deleteTag(state, action.payload.key);
     default:
       return state;
   }

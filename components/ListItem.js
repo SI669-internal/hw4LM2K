@@ -1,16 +1,18 @@
 
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, Icon } from '@rneui/themed';
-import { DELETE_ITEM } from '../Reducer';
 import { useSelector, useDispatch } from 'react-redux';
+import { DELETE_ITEM } from '../Reducer';
+import { TagLabel } from './TagLabel';
 
 function ListItem(props) {
 
-  //const [listItems, setListItems] = useContext(ListContext);
-
   const listItems = useSelector((state) => state.listItems);
+  const allTags = useSelector(state => state.tags);
+
   const dispatch = useDispatch();
-  const { item, navigation} = props;
+  const { item, navigation } = props;
+  console.log('rendering item:', item);
 
   const deleteItem = (item) => {
     dispatch({
@@ -19,8 +21,6 @@ function ListItem(props) {
         key: item.key
       }
     })
-    // let newListItems = listItems.filter(elem=>elem.key !== item.key);
-    // setListItems(newListItems);
   }
 
   return (
@@ -34,6 +34,8 @@ function ListItem(props) {
         }}  
       >
         <Text style={styles.listItemText}>{item.text}</Text>
+        <TagLabel itemTags={item.tags} allTags={allTags}/>
+        
       </TouchableOpacity>
       <TouchableOpacity 
         style={styles.li3}
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
-    padding: '1%',
+    //padding: '1%',
   },
   li1: {
     flex: 0.8, 

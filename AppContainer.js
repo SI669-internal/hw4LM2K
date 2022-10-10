@@ -27,7 +27,7 @@ function AppContainer() {
   return(
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='Home' screenOptions={{ title: 'ListMaker 2000' }}>
+        <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false }}>
           <Stack.Screen name='Home' component={HomeScreen}/>
           <Stack.Screen name='Details' component={DetailsScreen}/>
         </Stack.Navigator>
