@@ -17,6 +17,7 @@ function DetailsScreen(props) {
     { text: '', key: -1, tags: [] } :
     listItems.find(elem=>elem.key === itemKey);
 
+
   const [inputText, setInputText] = useState(item.text);
   const [selectedTags, setSelectedTags] = useState(item.tags);
 
@@ -41,6 +42,7 @@ function DetailsScreen(props) {
         tags: tags
       }
     });
+
   }
 
   return (
