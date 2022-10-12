@@ -1,28 +1,86 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Input, Button } from '@rneui/themed';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { ADD_ITEM, UPDATE_ITEM } from '../Reducer';
 
 function DetailsScreen(props) {
 
+  const listItems = useSelector(state=>state.listItems);
+  const allTags = useSelector(state=>[...state.tags]);
+  const dispatch = useDispatch();
+
   const { navigation, route } = props;
-  const { item } = route.params;
+  const { itemKey } = route.params;
+  const item = itemKey===-1 ? 
+    { text: '', key: -1, tags: [] } :
+    listItems.find(elem=>elem.key === itemKey);
+
 
   const [inputText, setInputText] = useState(item.text);
+  const [selectedTags, setSelectedTags] = useState(item.tags);
 
-  const addItem = (newText) => {
+  console.log('selTags', selectedTags);
+
+  const addItem = (newText, tags) => {
+    dispatch({
+      type: ADD_ITEM,
+      payload: {
+        text: newText,
+        tags: tags
+      }
+    });
   }
 
-  const updateItem = (item, newText) => {
+  const updateItem = (item, newText, tags) => {
+    dispatch({
+      type: UPDATE_ITEM,
+      payload: {
+        key: item.key,
+        text: newText, 
+        tags: tags
+      }
+    });
+
   }
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>
+          Edit Item
+        </Text>
+      </View>
       <View style={styles.inputContainer}>
         <Input
           placeholder='New Item'
           value={inputText}
           onChangeText={(text)=>setInputText(text)}
           style={styles.inputStyle}
+        />
+      </View>
+      <View style={{flex: 0.05, width: '80%'}}>
+        <FlatList
+          contentContainerStyle={styles.tagContainer}
+          data={allTags}
+          renderItem={({item})=>{
+            return (
+              <TouchableOpacity 
+                style={[styles.tagLabel, selectedTags.includes(item.key) ? {backgroundColor: 'lightblue'} : {}]}
+                onPress={()=>{
+                  let newSelectedTags = [];
+                  if (selectedTags.includes(item.key)) {
+                    newSelectedTags = selectedTags.filter(elem=>elem!==item.key);
+                  } else {
+                    newSelectedTags = selectedTags.concat(item.key);
+                  }
+                  setSelectedTags(newSelectedTags);
+                }}>
+                <Text>{item.tagName}</Text>
+              </TouchableOpacity>
+            )
+          }}
         />
       </View>
       <View style={styles.buttonContainer}>
@@ -36,9 +94,9 @@ function DetailsScreen(props) {
           title='Save'
           onPress={()=>{
             if (item.key === -1) {
-              addItem(inputText);
+              addItem(inputText, selectedTags);
             } else {
-              updateItem(item, inputText);
+              updateItem(item, inputText, selectedTags);
             }
             navigation.goBack();
           }}
@@ -56,12 +114,31 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingTop: '20%'
   }, 
+  header: {
+    flex: 0.1,
+    justifyContent: 'flex-end',
+    paddingBottom: '5%'
+  },
+  headerText: {
+    fontSize: 32
+  },
   inputContainer: {
     flex: 0.1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     width: '80%'
+  },
+  tagContainer: {
+    justifyContent: 'flex-start',
+    width: '100%',
+    flexDirection: 'row',
+  },
+  tagLabel: {
+    margin: 3,
+    padding: 3, 
+    backgroundColor: 'lightgray',
+    borderRadius: 6
   },
   buttonContainer: {
     flex: 0.1,
