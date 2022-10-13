@@ -27,7 +27,7 @@ function TagDetailsScreen(props) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>
-          Edit Tag
+          {tag.key===-1?'Add':'Edit'} Tag
         </Text>
       </View>
       <View style={styles.inputContainer}>
