@@ -2,7 +2,7 @@
 **SI669 Fall 2022**
 
 ## Video Walkthrough 
-See the [Demo Video](https://youtube.com/shorts/HQBAaiBEwPw).
+See the [Demo Video](https://youtu.be/QunoO_iCfQM). 
 
 ## Learning Goals
 * Use Redux to manage application-level state
@@ -35,8 +35,7 @@ See the [Demo Video](https://youtube.com/shorts/HQBAaiBEwPw).
 
 ## Extra Credit
 
-Allow users to CRUD colors for tags. Selected colors are shown wherever the tags are shown. See the [Demo Video](https://youtu.be/QunoO_iCfQM). 
-
+Allow users to CRUD colors for tags. Selected colors are shown wherever the tags are shown. See the 
 ## Grading (up to 4 points)
 | No. | Requirement  | Points |
 | --- | ------------- | ------------- |
