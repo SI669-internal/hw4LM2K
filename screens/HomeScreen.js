@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { useSelector } from "react-redux";
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from "react-native";
-import { FAB, Icon, BottomSheet } from "@rneui/base";
+import { Button } from "@rneui/base";
 
 import ListItem from "../components/ListItem";
 
@@ -9,22 +8,12 @@ function HomeScreen(props) {
   
   const { navigation, route } = props;
   const listItems = useSelector((state) => state.listItems);
-  const [ menuVisible, setMenuVisible ] = useState(false);
-
+  const nickname = useSelector((state) => state.nickname);
+  
   return(
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>ListMaker 2000</Text>
-        <TouchableOpacity
-          onPress={()=>{setMenuVisible(true)}}
-        >
-          <Icon 
-            name="ellipsis-horizontal-circle-outline"
-            type="ionicon"
-            color="black"
-            size={25}
-          />
-        </TouchableOpacity>
+        <Text style={styles.headerText}>{nickname}'s List</Text>
       </View>
       <View style={styles.listContainer}>
         <FlatList
@@ -36,31 +25,14 @@ function HomeScreen(props) {
           }}
         />
       </View>
-      <FAB
+      <Button
         title='Add'
-        color='darkblue'
         onPress={()=>{
           navigation.navigate('Details', {
-            item: {key: -1, text: ''}
+            item: {key: -1, text: '', tags: []}
           });
         }}
       />
-      <BottomSheet 
-        modalProps={{}} 
-        isVisible={menuVisible}
-        containerStyle={styles.menuContainer}  
-        onBackdropPress={()=>{setMenuVisible(false)}}
-      >
-        <TouchableOpacity>
-          <Text style={styles.menuText}>Edit Tags</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={()=>{setMenuVisible(false)}}
-          style={{backgroundColor: 'pink'}}
-        >
-          <Text  style={styles.menuText}>Cancel</Text>
-        </TouchableOpacity>
-      </BottomSheet>
     </View>
   );
 }
@@ -74,7 +46,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 0.1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
     width: '100%',

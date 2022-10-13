@@ -8,20 +8,14 @@ import { ADD_ITEM, UPDATE_ITEM } from '../Reducer';
 function DetailsScreen(props) {
 
   const listItems = useSelector(state=>state.listItems);
-  const allTags = useSelector(state=>[...state.tags]);
+  const allTags = useSelector(state=>state.tags);
   const dispatch = useDispatch();
 
   const { navigation, route } = props;
-  const { itemKey } = route.params;
-  const item = itemKey===-1 ? 
-    { text: '', key: -1, tags: [] } :
-    listItems.find(elem=>elem.key === itemKey);
-
+  const { item } = route.params;
 
   const [inputText, setInputText] = useState(item.text);
   const [selectedTags, setSelectedTags] = useState(item.tags);
-
-  console.log('selTags', selectedTags);
 
   const addItem = (newText, tags) => {
     dispatch({
@@ -60,14 +54,19 @@ function DetailsScreen(props) {
           style={styles.inputStyle}
         />
       </View>
-      <View style={{flex: 0.05, width: '80%'}}>
+      <View style={{flex: 0.07, width: '80%'}}>
         <FlatList
           contentContainerStyle={styles.tagContainer}
           data={allTags}
           renderItem={({item})=>{
             return (
               <TouchableOpacity 
-                style={[styles.tagLabel, selectedTags.includes(item.key) ? {backgroundColor: 'lightblue'} : {}]}
+                style={[
+                  styles.tagLabel, 
+                  {backgroundColor: item.color},
+                  selectedTags.includes(item.key) ? 
+                  {borderColor: 'black', borderWidth: 2} : 
+                  {}]}
                 onPress={()=>{
                   let newSelectedTags = [];
                   if (selectedTags.includes(item.key)) {
@@ -131,6 +130,7 @@ const styles = StyleSheet.create({
   },
   tagContainer: {
     justifyContent: 'flex-start',
+    alignItems: 'center',
     width: '100%',
     flexDirection: 'row',
   },
@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
     margin: 3,
     padding: 3, 
     backgroundColor: 'lightgray',
-    borderRadius: 6
+    borderRadius: 6,
+    borderWidth: 0
   },
   buttonContainer: {
     flex: 0.1,
