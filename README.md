@@ -35,7 +35,7 @@ See the [Demo Video](https://youtube.com/shorts/HQBAaiBEwPw).
 
 ## Extra Credit
 
-Allow users to CRUD colors for tags. Selected colors are shown wherever the tags are shown. See the demo video.
+Allow users to CRUD colors for tags. Selected colors are shown wherever the tags are shown. See the [Demo Video](https://youtu.be/QunoO_iCfQM). 
 
 ## Grading (up to 4 points)
 | No. | Requirement  | Points |
