@@ -7,12 +7,10 @@ import { TagLabel } from './TagLabel';
 
 function ListItem(props) {
 
-  const listItems = useSelector((state) => state.listItems);
   const allTags = useSelector(state => state.tags);
 
   const dispatch = useDispatch();
   const { item, navigation } = props;
-  console.log('rendering item:', item);
 
   const deleteItem = (item) => {
     dispatch({
@@ -72,10 +70,9 @@ const styles = StyleSheet.create({
   },
   li2: {
     flex: 0.2,
-    backgroundColor: 'white'
   },
   listItemText: {
-    fontSize: 24
+    fontSize: 18
   },
 });
 

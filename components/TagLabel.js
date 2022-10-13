@@ -19,7 +19,7 @@ function TagLabel({itemTags, allTags}) {
   if (itemTags.length >= 1) {
     let tag0 = tagFromId(itemTags[0], allTags);
     return (
-      <View style={[styles.tagLabel, {backgroundColor: tag0.color}]}>
+      <View style={[styles.tagLabel]}>
         <Text style={styles.tagLabelText}>
           { tag0.tagName } 
           { itemTags.length > 1 ? (' +' + (itemTags.length - 1)) : '' }
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   tagLabel: {
     padding: 5,
     borderRadius: 6,
-    backgroundColor: 'lightblue',
+    backgroundColor: 'lightgray',
   },
   tagLabelText: {
     fontSize: 10

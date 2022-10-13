@@ -1,17 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
 import { StyleSheet, View, Text, FlatList} from "react-native";
-import { Input } from '@rneui/themed';
+import { Input, Button } from '@rneui/themed';
 
 import TagListItem from '../components/TagListItem';
 import { SET_NICKNAME } from "../Reducer";
-import { useState } from "react";
 
 function SettingsScreen({navigation}) {
 
   let tags = useSelector(state=>state.tags);
   let nickname = useSelector(state=>state.nickname);
   let dispatch = useDispatch();
-  const [ inputText, setInputText ] = useState(nickname);
 
   const updateNickname = (text) => {
     console.log('updating nicknameL:', text);
@@ -21,7 +19,6 @@ function SettingsScreen({navigation}) {
         nickname: text
       }
     });
-    setInputText(text);
   }
 
   return(
@@ -30,17 +27,18 @@ function SettingsScreen({navigation}) {
         <Text style={styles.headerText}>Settings</Text>
       </View>
       <View style={styles.inputContainer}>
-        <Text style={{fontSize: 18}}>Nickname:</Text>
+        <Text style={styles.settingsHeader}>Nickname:</Text>
         <Input 
           style={styles.textInput}
-          value={inputText}
+          value={nickname}
           onChangeText={(text)=>updateNickname(text)}
         />
       </View>
       <View style={styles.listContainer}>
-        <Text>Tags:</Text>
+        <Text style={styles.settingsHeader}>Tags:</Text>
         <FlatList
           data={tags}
+          contentContainerStyle={{paddingLeft: '5%'}}
           renderItem={({item}) => {
             return (
               <TagListItem tag={item} navigation={navigation}/>
@@ -48,6 +46,14 @@ function SettingsScreen({navigation}) {
           }}
         />
       </View>
+      <Button
+        title='Add Tag'
+        onPress={()=>{
+          navigation.navigate('TagDetails', {
+            tag: {key: -1, tagName: '', color: colors[0]}
+          });
+        }}
+      />
     </View>
   );
 
@@ -73,22 +79,23 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flex: 0.1,
-    flexDirection: 'row',
-    width: '80%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'column',
+    width: '100%',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     paddingBottom: '5%',
     paddingHorizontal: '5%',
-    backgroundColor: 'pink'
+  },
+  settingsHeader: {
+    fontSize: 22
   },
   textInput: {
     fontSize: 18,
-    backgroundColor: 'tan'
   },
   listContainer: {
     flex: 0.6,
     width: '100%',
-    paddingLeft: '10%',
+    paddingLeft: '5%',
     paddingTop: '10%'
   },
 });

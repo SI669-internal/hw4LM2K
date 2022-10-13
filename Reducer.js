@@ -4,19 +4,11 @@ const UPDATE_ITEM = 'UPDATE_ITEM';
 const DELETE_ITEM = 'DELETE_ITEM';
 const SET_NICKNAME = 'SET_NICKNAME';
 
-const colors = {
-  blue: 'rgb(113, 212, 245)',
-  red: 'rgb(245, 113, 132)',
-  green: 'rgb(181, 245, 113)',
-  yellow: 'rgb(245, 245, 113)',
-  purple: 'rgb(179, 113, 245)',
-  orange: 'rbg(245, 157, 113)'
-}
 
 const initTags = [
-  { tagName: 'Personal', color: colors.blue, key: Date.now() },
-  { tagName: 'School', color: colors.red, key: Date.now() + 1},
-  { tagName: '669', color: colors.green, key: Date.now() + 2},
+  { tagName: 'Personal', key: Date.now() },
+  { tagName: 'School', key: Date.now() + 1},
+  { tagName: '669', key: Date.now() + 2},
 ];
 
 const initListItems = [
@@ -31,7 +23,6 @@ const initialState = {
   nickname: initNickname,
   tags: initTags,
   listItems: initListItems,
-  colors: colors
 }
 
 const addItem = (state, newText, tags) => {

@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   listItemText: {
-    fontSize: 24
+    fontSize: 14
   },
 });
 

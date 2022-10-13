@@ -48,7 +48,7 @@ function TagDetailsScreen(props) {
         <Button
           title='Save'
           onPress={()=>{
-            if (item.key === -1) {
+            if (tag.key === -1) {
               addTag(inputText, color);
             } else {
               updateTag(tag, inputText, color);
