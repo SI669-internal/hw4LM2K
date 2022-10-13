@@ -83,8 +83,4 @@ function rootReducer(state=initialState, action) {
   }
 }
 
-const myMiddleware = (action) => {
-  console.log('in middleware, action:', action);
-}
-
 export { rootReducer, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, SET_NICKNAME };
