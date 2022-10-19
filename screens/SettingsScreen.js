@@ -12,7 +12,6 @@ function SettingsScreen({navigation}) {
   let dispatch = useDispatch();
 
   const updateNickname = (text) => {
-    console.log('updating nicknameL:', text);
     dispatch({
       type: SET_NICKNAME,
       payload: {
@@ -50,7 +49,7 @@ function SettingsScreen({navigation}) {
         title='Add Tag'
         onPress={()=>{
           navigation.navigate('TagDetails', {
-            tag: {key: -1, tagName: '', color: colors[0]}
+            tag: {key: -1, tagName: '', color: 'gray'}
           });
         }}
       />
