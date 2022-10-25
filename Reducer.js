@@ -1,3 +1,9 @@
+import { initializeApp } from 'firebase/app';
+import { getFirestore, addDoc, collection } from 'firebase/firestore';
+import { firebaseConfig } from './Secrets';
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const ADD_ITEM = 'ADD_ITEM';
 const UPDATE_ITEM = 'UPDATE_ITEM';
@@ -25,11 +31,32 @@ const initialState = {
   listItems: initListItems,
 }
 
-const addItem = (state, newText, tags) => {
+const addItemAction = async (dispatch, newText, tags) => {
+
+  console.log('adding item:', newText, tags);
+  let newItem = {
+    text: newText,
+    tags: tags
+  };
+  let docRef = await addDoc(collection(db, 'todos'), newItem);
+  newItem.key = docRef.id;
+  console.log('added item to fb:', newItem);
+
+
+  let addAction = {
+    type: ADD_ITEM,
+    payload: newItem
+  }
+  dispatch(addAction);
+}
+
+
+const addItem = (state, payload) => {
+  const { text, tags, key } = payload;
   let { listItems } = state;
   let newListItems = listItems.concat({
-    text: newText,
-    key: Date.now() + Math.random(),
+    text: text,
+    key: key,
     tags: tags
   });
   return {
@@ -69,9 +96,10 @@ const setNickname = (state, newName) => {
 }
 
 function rootReducer(state=initialState, action) {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case ADD_ITEM:
-      return addItem(state, action.payload.text, action.payload.tags);
+      return addItem(state, payload);//.text, action.payload.tags);
     case UPDATE_ITEM:
       return updateItem(state, action.payload.key, action.payload.text, action.payload.tags);
     case DELETE_ITEM:
@@ -83,4 +111,7 @@ function rootReducer(state=initialState, action) {
   }
 }
 
-export { rootReducer, ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, SET_NICKNAME };
+export { 
+  rootReducer, 
+  addItemAction, 
+  ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, SET_NICKNAME };

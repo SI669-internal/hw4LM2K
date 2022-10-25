@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View, Text, TouchableOpacity } from "react-native
 import { Input, Button } from '@rneui/themed';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { ADD_ITEM, UPDATE_ITEM } from '../Reducer';
+import { ADD_ITEM, UPDATE_ITEM, addItemAction } from '../Reducer';
 
 function DetailsScreen(props) {
 
@@ -18,13 +18,7 @@ function DetailsScreen(props) {
   const [selectedTags, setSelectedTags] = useState(item.tags);
 
   const addItem = (newText, tags) => {
-    dispatch({
-      type: ADD_ITEM,
-      payload: {
-        text: newText,
-        tags: tags
-      }
-    });
+    addItemAction(dispatch, newText, tags);
   }
 
   const updateItem = (item, newText, tags) => {
