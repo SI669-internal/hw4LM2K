@@ -1,5 +1,5 @@
 # HW4: ListMaker 2000
-**SI669 Fall 2022**
+**SI669 Fall 2023**
 
 ## Video Walkthrough 
 See the [Demo Video](https://youtu.be/QunoO_iCfQM). 
